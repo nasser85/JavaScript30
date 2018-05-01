@@ -58,34 +58,25 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
-document.addEventListener('DOMContentLoaded', ()=> {
-  const keys = document.getElementsByTagName('KBD');
-  document.addEventListener('keydown', e => {
-    var pressed = false;
-    for (let i = 0; i < keys.length; i++) {
-      if (keys[i].childNodes[0].nodeValue == e.key.toUpperCase()) {
-        pressed = keys[i];
-        break;
-      }
-    }
-    if (pressed) {
-      pressed.parentElement.className += ' playing';
-    }
-  })
-  document.addEventListener('keyup', e => {
-     var pressed = false;
-    for (let i = 0; i < keys.length; i++) {
-      if (keys[i].childNodes[0].nodeValue == e.key.toUpperCase()) {
-        pressed = keys[i];
-        break;
-      }
-    }
-    if (pressed) {
-      pressed.parentElement.className = pressed.parentElement.className.replace(/ playing/g, '');
+  function getKey(event) {
+    return document.querySelector('.key[data-key="' + event.keyCode + '"]')
+  }
+
+  window.addEventListener('keydown', e => {
+    let key = getKey(e)
+    if (key) {
+      key.classList.add('playing');
+      let sound = document.querySelector('audio[data-key="' + e.keyCode + '"]');
+      sound.currentTime = 0;
+      sound.play();
     }
   })
-})
-  
+  window.addEventListener('keyup', e => {
+    let key = getKey(e);
+    if (key) {
+      key.classList.remove('playing');
+    }
+  })
 
 </script>
 
